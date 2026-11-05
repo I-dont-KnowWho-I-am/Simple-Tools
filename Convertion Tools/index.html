@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konverter Text ke Binary, Hex, Octal, Base64</title>
+    <link rel="stylesheet" href="../assets/CSS/ConvertionToolsStyle.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>Konverter Text dan Sistem bilangan v0.0.3</h2>
+    
+    <label for="inputText"><b>Input: </b></label>
+    <textarea id="inputText" rows="3" placeholder="..."></textarea>
+
+    <label for="conversionfrom" >Select<label>
+    <select id="conversionfrom" >
+        <option value="Binary">Binary</option>
+        <option value="Octal">Octal</option>
+        <option value="Hexadecimal">Hexadecimal</option>
+        <option value="Decimal">Decimal</option>
+        <option value="Text">Text</option>
+        <option value="Base64">Base64</option>
+    </select>
+    <hr>
+    <p class="text"><b>To</b></p>
+    <hr>
+    <label for="conversionto">Select</label>
+    <select id="conversionto">
+        <option value="Binary">Binary</option>
+        <option value="Octal">Octal</option>
+        <option value="Hexadecimal">Hexadecimal</option>
+        <option value="Decimal">Decimal</option>
+        <option value="Text">Text</option>
+        <option value="Base64">Base64</option>
+    <select>
+
+<button onclick="convert(); ">Convert</button>
+
+    <h3>Output:</h3>
+    <div id="result" class="result-box"></div>
+    <a id="eastereggurl" href="https://youtu.be/dQw4w9WgXcQ?si=ehfgKuBv50yu8aur" target="_blank">
+    <img id="gambar" alt="" src="">
+    </a>
+    <h3 id="easteregg"></h3>
+</div>
+
+<script src="../assets/javascript/ConvertionToolsmain.js"></script>
+
+</body>
+</html>
