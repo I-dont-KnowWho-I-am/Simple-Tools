@@ -94,14 +94,32 @@ function convert() {
             urleasteregg.href = "https://youtu.be/dQw4w9WgXcQ?si=ehfgKuBv50yu8aur";
             easteregg.innerText = "ⓘ You've Been Potatoed :)";
         }
-        if (output === '100000001000000001'){
+        else if (output === '100000001000000001'){
             gambar.src = "../assets/Easter_egg_image/sawit.jpg";
             urleasteregg.href = "https://www.youtube.com/watch?v=i2JQMDgNOa8";
             easteregg.innerText = "ⓘ Just Sa WIT :)";
         }
+        else {
+            gambar.src = "";
+            urleasteregg.href = "";
+            easteregg.innerText = "";
+        }
     } catch (e) {
         output = 'Gagal mengkonversi! Pastikan format input sudah benar.';
     }
-
     document.getElementById('result').innerText = output;
+}
+function copyText() {
+    const resultText = document.getElementById('result').innerText;
+    const CpyBtn = document.getElementById('CpyBtn');
+
+    navigator.clipboard.writeText(resultText).then(() => {
+        CpyBtn.innerHTML = "Copied!";
+        setTimeout(() => {
+            CpyBtn.innerHTML = "Copy to Clipboard"
+        }, 1000);
+
+    }).catch(err => {
+        console.error('Gagal menyalin teks: ', err);
+    });
 }
