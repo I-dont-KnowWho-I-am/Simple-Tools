@@ -10,4 +10,6 @@ BTW here is the secret easter egg (demo):
 
    I Hope you enjoy it :)
 
+**The issue with the homepage display on mobile devices will be fixed soon.**
+
    
