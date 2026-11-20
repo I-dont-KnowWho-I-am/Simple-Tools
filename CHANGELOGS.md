@@ -10,5 +10,8 @@ All notable changes to this project will be documented in this file.
 + change from Light mode to Dark Mode style
 + Add [Credits] (https://github.com/I-dont-KnowWho-I-am/Simple-Tools/blob/master/CREDITS.md) and [ReadMe] (https://github.com/I-dont-KnowWho-I-am/Simple-Tools/blob/master/README.md)
 ---
-## update v1.0.1 [8/11/2026]
+## Update v1.0.1 [8/11/2026]
 + Added Copy feature
+
+## Update v1.0.1 [20/11/2026]
++ Fixed buggy homepage display
