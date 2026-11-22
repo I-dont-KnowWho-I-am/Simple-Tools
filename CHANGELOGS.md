@@ -15,3 +15,6 @@ All notable changes to this project will be documented in this file.
 
 ## Update v1.0.1 [20/11/2026]
 + Fixed buggy homepage display
+
+## Update v1.0.2 [20/11/2026]
++ Added Report Issue link and Request update to Home Page
