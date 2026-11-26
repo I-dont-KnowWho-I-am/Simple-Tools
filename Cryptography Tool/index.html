@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fernet Cryptography Studio - Media Edukasi</title>
+    <!-- Meta description -->
+    <meta name="description" content="Aplikasi web interaktif untuk edukasi dan eksperimen kriptografi simetris spesifikasi Fernet (AES-128-CBC + HMAC-SHA256).">
+    
+    <!-- Link file CSS terpisah -->
+    <link rel="stylesheet" href="../assets/CSS/CryptographyToolstyle.css">
+    
+    <!-- Google Fonts untuk tipografi yang rapi dan nyaman di mata -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="logo-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1>Fernet Crypto Studio</h1>
+                    <span class="badge badge-subtle">Kriptografi Simetris Otentikasi</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button id="themeToggleBtn" class="btn btn-icon" title="Ganti Tema (Terang / Gelap)" aria-label="Ganti Tema">
+                    <!-- Icon Light Mode (Matahari) -->
+                    <span class="theme-icon light-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </span>
+                    <!-- Icon Dark Mode (Bulan) -->
+                    <span class="theme-icon dark-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </header>
+
+        <!-- WARNING BANNER / PERINGATAN PENTING & EDUKASI -->
+        <section class="banner-warning" role="alert">
+            <div class="warning-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </div>
+            <div class="warning-content">
+                <strong>Peringatan Keamanan & Tujuan Penggunaan:</strong>
+                <p>Website ini dibuat <strong>semata-mata untuk tujuan edukasi dan pembelajaran konsep kriptografi</strong>. Dilarang keras memasukkan pesan atau data riil yang bersifat sensitif (seperti kata sandi asli, PIN perbankan, nomor kartu kredit, atau data rahasia pribadi). Seluruh proses kriptografi berjalan lokal di peramban (Web Crypto API) tanpa transmisi ke server.</p>
+            </div>
+        </section>
+
+        <main class="main-grid">
+            <!-- SECTION 1: KEY MANAGEMENT & INSPECTION -->
+            <section class="card key-section">
+                <div class="card-header">
+                    <div class="header-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 2-2 2m-6 6 7 7-2 2-7-7-3 3-4-4 3-3-2-2 2-2 4 4 3-3Z"></path></svg>
+                        <h2>Kunci Rahasia Fernet (32-byte Base64URL)</h2>
+                    </div>
+                    <div class="header-tags">
+                        <span class="badge" id="keyStatusBadge">Kunci Belum Dibuat</span>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <p class="section-desc">
+                        Fernet menggunakan kunci simetris 256-bit (32 byte) yang terdiri dari 16 byte kunci penandatanganan (HMAC-SHA256) dan 16 byte kunci enkripsi (AES-128-CBC).
+                    </p>
+
+                    <div class="form-group">
+                        <label for="fernetKeyInput">Kunci Fernet Aktif:</label>
+                        <div class="input-with-actions">
+                            <input type="password" id="fernetKeyInput" class="code-font" placeholder="Kunci Fernet 32-byte base64url..." autocomplete="off" spellcheck="false">
+                            <button type="button" id="toggleKeyVisibilityBtn" class="btn btn-secondary" title="Tampilkan atau sembunyikan kunci">
+                                Lihat
+                            </button>
+                            <button type="button" id="copyKeyBtn" class="btn btn-secondary" title="Salin kunci ke papan klip">
+                                Salin
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="key-actions-row">
+                        <button type="button" id="generateKeyBtn" class="btn btn-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"/></svg>
+                            Generate Kunci Baru (CSPRNG)
+                        </button>
+                        <button type="button" id="inspectKeyBtn" class="btn btn-outline">
+                            Bedah Struktur Kunci
+                        </button>
+                    </div>
+
+                    <!-- Panel Inspeksi Kunci Internal -->
+                    <div id="keyInspectorPanel" class="inspector-panel hidden">
+                        <h4>Struktur Internal Kunci (32 Bytes):</h4>
+                        <div class="key-breakdown-grid">
+                            <div class="sub-key-box">
+                                <span class="sub-key-label">Signing Key (16 bytes - HMAC-SHA256):</span>
+                                <code id="inspectSigningKey">-</code>
+                                <span class="cell-desc">Digunakan untuk menghasilkan & memverifikasi integritas signature</span>
+                            </div>
+                            <div class="sub-key-box">
+                                <span class="sub-key-label">Encryption Key (16 bytes - AES-128-CBC):</span>
+                                <code id="inspectEncryptionKey">-</code>
+                                <span class="cell-desc">Digunakan untuk mengenkripsi & mendekripsi payload data</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: OPERASI KRIPTOGRAFI (ENKRIPSI / DEKRIPSI / BEDAH TOKEN) -->
+            <section class="card operations-section">
+                <div class="tabs-nav" role="tablist">
+                    <button class="tab-btn active" id="tabEncryptBtn" data-target="encryptPanel" role="tab" aria-selected="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        Enkripsi (Encrypt)
+                    </button>
+                    <button class="tab-btn" id="tabDecryptBtn" data-target="decryptPanel" role="tab" aria-selected="false">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                        Dekripsi (Decrypt)
+                    </button>
+                    <button class="tab-btn" id="tabInspectorBtn" data-target="tokenInspectorPanel" role="tab" aria-selected="false">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        Bedah Token Fernet
+                    </button>
+                </div>
+
+                <div class="card-body">
+                    <!-- 1. ENCRYPT PANEL -->
+                    <div id="encryptPanel" class="tab-content active" role="tabpanel">
+                        <div class="form-group">
+                            <div class="label-row">
+                                <label for="plaintextInput">Pesan Teks (Plaintext):</label>
+                                <span class="char-count" id="plaintextCount">0 karakter</span>
+                            </div>
+                            <textarea id="plaintextInput" rows="4" placeholder="Ketik pesan edukasi di sini... (contoh: 'Halo Kriptografi Fernet!')"></textarea>
+                            
+                            <!-- Peringatan jika terdeteksi kata sandi / sensitif -->
+                            <div id="sensitiveAlert" class="sensitive-alert" role="status">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                <span><strong>Peringatan Edukasi:</strong> Terdeteksi teks yang menyerupai kata sandi atau data sensitif. Harap hanya gunakan data contoh/dummy!</span>
+                            </div>
+                        </div>
+
+                        <div class="actions-row">
+                            <button type="button" id="doEncryptBtn" class="btn btn-primary">
+                                Enkripsi Pesan
+                            </button>
+                            <button type="button" id="clearEncryptBtn" class="btn btn-ghost">
+                                Bersihkan
+                            </button>
+                        </div>
+
+                        <div class="form-group result-group" style="margin-top: 18px;">
+                            <div class="label-row">
+                                <label for="encryptedOutput">Token Hasil Enkripsi (Fernet Token):</label>
+                                <button type="button" id="copyCiphertextBtn" class="btn btn-sm btn-secondary">Salin Token</button>
+                            </div>
+                            <textarea id="encryptedOutput" class="code-font" rows="3" readonly placeholder="Token Fernet hasil enkripsi akan tampil di sini..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 2. DECRYPT PANEL -->
+                    <div id="decryptPanel" class="tab-content" role="tabpanel">
+                        <div class="form-group">
+                            <div class="label-row">
+                                <label for="ciphertextInput">Token Fernet (Base64URL):</label>
+                                <button type="button" id="pasteFromEncryptBtn" class="btn btn-sm btn-ghost">Gunakan Hasil Enkripsi</button>
+                            </div>
+                            <textarea id="ciphertextInput" class="code-font" rows="3" placeholder="Tempel token Fernet yang ingin didekripsi (diawali dengan gAAAAA...)"></textarea>
+                        </div>
+
+                        <div class="settings-row">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="enforceTTLCheckbox">
+                                Batasi masa berlaku token (TTL / Max Age)
+                            </label>
+                            <div class="ttl-input-wrapper hidden" id="ttlWrapper">
+                                <input type="number" id="ttlSecondsInput" min="1" max="86400" value="60">
+                                <span class="unit">detik</span>
+                            </div>
+                        </div>
+
+                        <div class="actions-row">
+                            <button type="button" id="doDecryptBtn" class="btn btn-primary">
+                                Dekripsi Token
+                            </button>
+                            <button type="button" id="clearDecryptBtn" class="btn btn-ghost">
+                                Bersihkan
+                            </button>
+                        </div>
+
+                        <div class="form-group result-group" style="margin-top: 18px;">
+                            <div class="label-row">
+                                <label for="decryptedOutput">Pesan Asli Hasil Dekripsi (Plaintext):</label>
+                                <button type="button" id="copyPlaintextBtn" class="btn btn-sm btn-secondary">Salin Pesan</button>
+                            </div>
+                            <textarea id="decryptedOutput" rows="3" readonly placeholder="Pesan asli akan muncul jika verifikasi tanda tangan HMAC dan kunci valid..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 3. TOKEN INSPECTOR PANEL -->
+                    <div id="tokenInspectorPanel" class="tab-content" role="tabpanel">
+                        <p class="section-desc">
+                            Fernet membungkus data dengan spesifikasi biner ketat: <code>Version (0x80) | Timestamp (8B) | IV (16B) | Ciphertext | HMAC (32B)</code>. Masukkan token untuk melihat anatomi struktur byte-nya:
+                        </p>
+                        
+                        <div class="form-group">
+                            <label for="inspectTokenInput">Masukkan Token Fernet untuk Dianalisis:</label>
+                            <div class="input-with-actions">
+                                <input type="text" id="inspectTokenInput" class="code-font" placeholder="gAAAAAB...">
+                                <button type="button" id="runInspectTokenBtn" class="btn btn-secondary">Analisis Struktur</button>
+                            </div>
+                        </div>
+
+                        <div id="tokenDissectionResult" class="dissection-box hidden">
+                            <div class="token-anatomy-grid">
+                                <div class="anatomy-cell">
+                                    <span class="cell-title">Version (1 byte)</span>
+                                    <code id="tokVersion">-</code>
+                                    <span class="cell-desc">Wajib 0x80 (128 desimal)</span>
+                                </div>
+                                <div class="anatomy-cell">
+                                    <span class="cell-title">Waktu Pembuatan (Timestamp)</span>
+                                    <code id="tokTimestamp">-</code>
+                                    <span class="cell-desc" id="tokTimeReadable">-</span>
+                                </div>
+                                <div class="anatomy-cell">
+                                    <span class="cell-title">IV (16 bytes)</span>
+                                    <code id="tokIV">-</code>
+                                    <span class="cell-desc">Inisialisasi unik AES-CBC acak</span>
+                                </div>
+                                <div class="anatomy-cell">
+                                    <span class="cell-title">Ciphertext (AES-128-CBC)</span>
+                                    <code id="tokCipherLen">-</code>
+                                    <span class="cell-desc">Data terenkripsi (PKCS#7 padded)</span>
+                                </div>
+                                <div class="anatomy-cell">
+                                    <span class="cell-title">HMAC Signature (32 bytes)</span>
+                                    <code id="tokHMAC">-</code>
+                                    <span class="cell-desc">Pemeriksaan integritas SHA-256</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: EDUKASI & PENJELASAN KRIPTOGRAFI -->
+            <section class="card education-section">
+                <div class="card-header">
+                    <div class="header-title">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
+                        <h2>Bagaimana Kriptografi Fernet Bekerja?</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="edu-grid">
+                        <div class="edu-item">
+                            <h3>1. Keamanan Simetris Otentikasi</h3>
+                            <p>Fernet menjamin tidak hanya kerahasiaan data (confidentiality), tetapi juga integritas dan otentisitas data (data integrity & authenticity). Artinya, pesan tidak dapat dibaca orang lain, dan jika ada pihak yang memodifikasi walau 1 bit pun, dekripsi akan gagal seketika.</p>
+                        </div>
+                        <div class="edu-item">
+                            <h3>2. Algoritma Utama Fernet</h3>
+                            <ul>
+                                <li><strong>AES-128 (Mode CBC):</strong> Mengamankan pesan teks dengan padding PKCS#7.</li>
+                                <li><strong>HMAC-SHA256:</strong> Memverifikasi bahwa token tidak dimanipulasi pihak ketiga (anti-tampering).</li>
+                                <li><strong>Timestamp 64-bit:</strong> Mencegah serangan replay dan memungkinkan validasi waktu kadaluarsa (TTL).</li>
+                                <li><strong>IV (Initialization Vector) 128-bit:</strong> Membuat hasil enkripsi selalu unik walaupun teks aslinya sama.</li>
+                            </ul>
+                        </div>
+                        <div class="edu-item">
+                            <h3>3. Pemrosesan 100% Sisi Klien</h3>
+                            <p>Semua pembuatan kunci, enkripsi, dan dekripsi berjalan murni di peramban web lokal Anda menggunakan <strong>Web Cryptography API (CSPRNG)</strong>. Tidak ada lalu lintas data pesan atau kunci yang dikirim ke server manapun.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- NOTIFICATION TOAST -->
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Fernet Crypto Studio &bull; Dibuat khusus sebagai media pembelajaran dan demonstrasi kriptografi.</p>
+        </footer>
+    </div>
+
+    <!-- Script logika utama terpisah -->
+    <script src="../assets/javascript/CryptographyToolmain.js"></script>
+</body>
+</html>

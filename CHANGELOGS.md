@@ -18,3 +18,6 @@ All notable changes to this project will be documented in this file.
 
 ## Update v1.0.2 [20/11/2026]
 + Added Report Issue link and Request update to Home Page
+
+## Update v1.0.2 [26/11/2026]
++ Added Fernet Cryptography

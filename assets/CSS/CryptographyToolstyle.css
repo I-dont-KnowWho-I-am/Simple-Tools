@@ -1,0 +1,733 @@
+/* ==========================================================================
+   Fernet Cryptography Studio - Style System
+   Prinsip Desain: Simpel, tenang, nyaman di mata (eye-friendly), rapi & modular.
+   WCAG AA compliant contrast ratio, soft dark mode, and warm light mode.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties / Design Tokens
+   -------------------------------------------------------------------------- */
+:root {
+    /* Font Families */
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Consolas, Monaco, monospace;
+
+    /* Light Theme (Default fallback) - Hangat, lembut, tidak putih menusuk */
+    --bg-base: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #f1f5f9;
+    --bg-input: #ffffff;
+    
+    --border-subtle: #e2e8f0;
+    --border-focus: #3b82f6;
+
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --text-faint: #94a3b8;
+
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-contrast: #ffffff;
+    --primary-faint: #eff6ff;
+
+    --accent-warn-bg: #fffbeb;
+    --accent-warn-border: #fde68a;
+    --accent-warn-text: #92400e;
+
+    --accent-danger-bg: #fef2f2;
+    --accent-danger-border: #fecaca;
+    --accent-danger-text: #991b1b;
+
+    --accent-success-bg: #f0fdf4;
+    --accent-success-border: #bbf7d0;
+    --accent-success-text: #166534;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    
+    --transition: all 0.2s ease-in-out;
+}
+
+[data-theme="dark"] {
+    /* Dark Theme - Slate/Charcoal lembut, bukan #000 pekat */
+    --bg-base: #0f172a;
+    --bg-surface: #1e293b;
+    --bg-surface-elevated: #334155;
+    --bg-input: #0f172a;
+
+    --border-subtle: #334155;
+    --border-focus: #60a5fa;
+
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --text-faint: #64748b;
+
+    --primary: #3b82f6;
+    --primary-hover: #60a5fa;
+    --primary-contrast: #ffffff;
+    --primary-faint: #1e3a5f;
+
+    --accent-warn-bg: rgba(245, 158, 11, 0.12);
+    --accent-warn-border: rgba(245, 158, 11, 0.3);
+    --accent-warn-text: #fcd34d;
+
+    --accent-danger-bg: rgba(239, 68, 68, 0.12);
+    --accent-danger-border: rgba(239, 68, 68, 0.3);
+    --accent-danger-text: #fca5a5;
+
+    --accent-success-bg: rgba(34, 197, 94, 0.12);
+    --accent-success-border: rgba(34, 197, 94, 0.3);
+    --accent-success-text: #86efac;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   2. Base & Reset
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-base);
+    color: var(--text-main);
+    line-height: 1.6;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.25s ease, color 0.25s ease;
+    padding: 24px 16px;
+    min-height: 100vh;
+}
+
+.code-font, code, pre {
+    font-family: var(--font-mono);
+}
+
+/* --------------------------------------------------------------------------
+   3. Layout Structure
+   -------------------------------------------------------------------------- */
+.app-container {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--primary-faint);
+    color: var(--primary);
+}
+
+.brand h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.brand .badge {
+    margin-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Badges & Labels
+   -------------------------------------------------------------------------- */
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 0.725rem;
+    font-weight: 600;
+    border-radius: 9999px;
+    background: var(--bg-surface-elevated);
+    color: var(--text-muted);
+}
+
+.badge-subtle {
+    background: var(--primary-faint);
+    color: var(--primary);
+}
+
+.badge-success {
+    background: var(--accent-success-bg);
+    color: var(--accent-success-text);
+    border: 1px solid var(--accent-success-border);
+}
+
+.badge-warning {
+    background: var(--accent-warn-bg);
+    color: var(--accent-warn-text);
+    border: 1px solid var(--accent-warn-border);
+}
+
+/* --------------------------------------------------------------------------
+   5. Security Warning Banner
+   -------------------------------------------------------------------------- */
+.banner-warning {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px 18px;
+    background: var(--accent-warn-bg);
+    border: 1px solid var(--accent-warn-border);
+    border-radius: var(--radius-md);
+    color: var(--accent-warn-text);
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.warning-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.warning-content p {
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+/* Live Sensitive Data Detected Alert inside form */
+.sensitive-alert {
+    display: none;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: var(--accent-danger-bg);
+    border: 1px solid var(--accent-danger-border);
+    border-radius: var(--radius-sm);
+    color: var(--accent-danger-text);
+    font-size: 0.85rem;
+}
+
+.sensitive-alert.visible {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   6. Cards & Containers
+   -------------------------------------------------------------------------- */
+.main-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-title h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.section-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   7. Form Inputs & Groups
+   -------------------------------------------------------------------------- */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.char-count {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+textarea {
+    width: 100%;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 0.925rem;
+    font-family: inherit;
+    transition: var(--transition);
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 85px;
+}
+
+.input-with-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.input-with-actions input {
+    flex: 1;
+}
+
+/* --------------------------------------------------------------------------
+   8. Buttons & Actions
+   -------------------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: var(--transition);
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: var(--primary-contrast);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+}
+
+.btn-secondary {
+    background: var(--bg-surface-elevated);
+    color: var(--text-main);
+    border-color: var(--border-subtle);
+}
+
+.btn-secondary:hover {
+    background: var(--border-subtle);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-main);
+    border-color: var(--border-subtle);
+}
+
+.btn-outline:hover {
+    background: var(--bg-surface-elevated);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+}
+
+.btn-ghost:hover {
+    background: var(--bg-surface-elevated);
+    color: var(--text-main);
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 0.775rem;
+}
+
+.btn-icon {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: var(--radius-md);
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+}
+
+.btn-icon:hover {
+    color: var(--text-main);
+    background: var(--bg-surface-elevated);
+}
+
+.key-actions-row,
+.actions-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.settings-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 12px 0 16px 0;
+}
+
+.ttl-input-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ttl-input-wrapper .unit {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.checkbox-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    user-select: none;
+    color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   9. Tabs Navigation
+   -------------------------------------------------------------------------- */
+.tabs-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    overflow-x: auto;
+}
+
+.tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.tab-btn:hover {
+    color: var(--text-main);
+    background: var(--bg-surface-elevated);
+}
+
+.tab-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    background: transparent;
+    font-weight: 600;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.15s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(3px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --------------------------------------------------------------------------
+   10. Inspector Panels & Breakdown Grids
+   -------------------------------------------------------------------------- */
+.inspector-panel {
+    margin-top: 16px;
+    padding: 16px;
+    background: var(--bg-surface-elevated);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+}
+
+.inspector-panel h4 {
+    font-size: 0.875rem;
+    margin-bottom: 12px;
+    color: var(--text-main);
+}
+
+.key-breakdown-grid,
+.token-anatomy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+
+.sub-key-box,
+.anatomy-cell {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sub-key-label,
+.cell-title {
+    font-size: 0.775rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.cell-desc {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+}
+
+.anatomy-cell code,
+.sub-key-box code {
+    font-size: 0.85rem;
+    word-break: break-all;
+    color: var(--primary);
+    background: var(--bg-surface-elevated);
+    padding: 4px 6px;
+    border-radius: 4px;
+    margin: 4px 0;
+}
+
+.dissection-box {
+    margin-top: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   11. Education Section
+   -------------------------------------------------------------------------- */
+.edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.edu-item {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 16px;
+}
+
+.edu-item h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--primary);
+}
+
+.edu-item p,
+.edu-item li {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.edu-item ul {
+    padding-left: 18px;
+    margin-top: 6px;
+}
+
+.edu-item li {
+    margin-bottom: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   12. Toast Notification
+   -------------------------------------------------------------------------- */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 20px;
+    background: var(--bg-surface);
+    color: var(--text-main);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transform: translateY(100px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.toast.toast-error {
+    border-color: var(--accent-danger-border);
+    background: var(--accent-danger-bg);
+    color: var(--accent-danger-text);
+}
+
+.toast.toast-success {
+    border-color: var(--accent-success-border);
+    background: var(--accent-success-bg);
+    color: var(--accent-success-text);
+}
+
+/* --------------------------------------------------------------------------
+   13. Footer
+   -------------------------------------------------------------------------- */
+.app-footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 0.825rem;
+    color: var(--text-faint);
+}
+
+/* Utility Helpers */
+.hidden {
+    display: none !important;
+}
+
+/* Theme Toggle Icons */
+[data-theme="dark"] .dark-icon {
+    display: block;
+}
+[data-theme="dark"] .light-icon {
+    display: none;
+}
+[data-theme="light"] .dark-icon {
+    display: none;
+}
+[data-theme="light"] .light-icon {
+    display: block;
+}
+
+/* Responsive queries */
+@media (max-width: 640px) {
+    body {
+        padding: 12px 8px;
+    }
+
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .header-actions {
+        align-self: flex-end;
+    }
+
+    .input-with-actions {
+        flex-direction: column;
+    }
+
+    .key-actions-row,
+    .actions-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .btn-icon {
+        width: 38px;
+    }
+}
